@@ -32,6 +32,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -56,7 +57,9 @@ import com.android.settings.applications.AppOpsDetails;
 import com.android.settings.applications.AppOpsState;
 import com.android.settings.applications.AppOpsState.OpsTemplate;
 import com.android.settings.privacyguard.AppInfoLoader;
+import com.android.settings.privacyguard.PrivacyGuardManager.AppInfo;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -252,7 +255,6 @@ public class PrivacyGuardManager extends Fragment
             } else {
                 sectionIndex = app.title.substring(0, 1).toUpperCase();
             }
-
             if (lastSectionIndex == null ||
                     !TextUtils.equals(sectionIndex, lastSectionIndex)) {
                 sections.add(sectionIndex);
@@ -389,6 +391,8 @@ public class PrivacyGuardManager extends Fragment
                 i.setClass(mActivity, AppOpsSummaryActivity.class);
                 mActivity.startActivity(i);
                 return true;
+            case R.id.auto_config:
+                new AutoConfigTask(mApps, getActivity()).execute();
             default:
                 return super.onContextItemSelected(item);
         }

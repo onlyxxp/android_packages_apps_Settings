@@ -24,6 +24,9 @@
           android:checkable="true" />
     <item android:id="@+id/advanced"
           android:title="@string/advanced" />
+    <item android:id="@+id/auto_config"
+          android:icon="@drawable/ic_sync_red"
+          android:title="@string/privacy_guard_auto_config_title" />
     <item android:id="@+id/help"
           android:title="@string/privacy_guard_help_title" />
 </menu>

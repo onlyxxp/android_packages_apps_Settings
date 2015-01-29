@@ -323,6 +323,8 @@
     <string name="privacy_guard_reset_text">Reset permissions?</string>
     <string name="privacy_guard_help_text">In this screen you can choose which apps Privacy Guard should be active for by simply tapping on them. Selected apps will not be able to access your personal data such as contacts, messages or call logs. Long pressing an app\'s entry opens its app details screen.\n\nBuilt-in apps are not shown by default but can be revealed by selecting the respective menu option.</string>
     <string name="privacy_guard_manager_show_system_apps">Show built-in apps</string>
+    <string name="privacy_guard_advanced_settings_title">Advanced</string>
+    <string name="privacy_guard_auto_config_title">自动配置</string>
 
     <!-- Increasing ring tone volume -->
     <string name="increasing_ring_volume_option_title">Increasing ring volume</string>
