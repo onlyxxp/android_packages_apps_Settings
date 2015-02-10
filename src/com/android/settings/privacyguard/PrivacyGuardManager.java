@@ -17,6 +17,8 @@
 package com.android.settings.privacyguard;
 
 import android.app.FragmentTransaction;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.animation.AnimationUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,20 +26,14 @@ import android.app.AppOpsManager;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.LoaderManager;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,14 +50,9 @@ import com.android.settings.R;
 import com.android.settings.Settings.AppOpsSummaryActivity;
 import com.android.settings.SubSettings;
 import com.android.settings.applications.AppOpsDetails;
-import com.android.settings.applications.AppOpsState;
-import com.android.settings.applications.AppOpsState.OpsTemplate;
-import com.android.settings.privacyguard.AppInfoLoader;
-import com.android.settings.privacyguard.PrivacyGuardManager.AppInfo;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 public class PrivacyGuardManager extends Fragment
@@ -92,12 +83,47 @@ public class PrivacyGuardManager extends Fragment
     private final static String PRIVACY_GUARD_FRAGMENT_TAG = "privacy_guard_fragment";
 
     // holder for package data passed into the adapter
-    public static final class AppInfo {
+    public static final class AppInfo implements Parcelable{
         String title;
         String packageName;
         boolean enabled;
         boolean privacyGuardEnabled;
         int uid;
+
+        public AppInfo() {
+        }
+
+        public AppInfo(Parcel source) {
+            title = source.readString();
+            packageName = source.readString();
+            enabled = source.readInt() == 1;
+            privacyGuardEnabled = source.readInt() == 1;
+            uid = source.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(title);
+            parcel.writeString(packageName);
+            parcel.writeInt(enabled ? 1 : 0);
+            parcel.writeInt(privacyGuardEnabled ? 1 : 0);
+            parcel.writeInt(uid);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<AppInfo> CREATOR = new Creator<AppInfo>() {
+            @Override public AppInfo createFromParcel(Parcel source) {
+                return new AppInfo(source);
+            }
+
+            @Override public AppInfo[] newArray(int size) {
+                return new AppInfo[size];
+            }
+        };
     }
 
     @Override
@@ -392,7 +418,7 @@ public class PrivacyGuardManager extends Fragment
                 mActivity.startActivity(i);
                 return true;
             case R.id.auto_config:
-                new AutoConfigTask(mApps, getActivity()).execute();
+                AutoConfigActivity.start(getActivity(), mApps);
             default:
                 return super.onContextItemSelected(item);
         }

@@ -1,6 +1,6 @@
 package com.android.settings.privacyguard;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import com.android.settings.privacyguard.PrivacyGuardManager.AppInfo;
 
@@ -21,7 +21,9 @@ public class AppInstalledReceiver extends BroadcastReceiver {
         System.out.println("AppInstalledReceiver onReceive " + text);
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 
-        new AutoConfigTask(Arrays.asList(appInfo), context).execute();
+        ArrayList<AppInfo> infos = new ArrayList<AppInfo>();
+        infos.add(appInfo);
+        AutoConfigActivity.start(context, infos);
     }
 
 }

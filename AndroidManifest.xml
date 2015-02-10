@@ -2116,6 +2116,8 @@
 
         <activity android:name=".cyanogenmod.PerformanceSettings" />
 
+        <activity android:name="com.android.settings.privacyguard.AutoConfigActivity"/>
+
         <receiver android:name=".widget.SettingsAppWidgetProvider"
                 android:label="@string/gadget_title"
                 android:exported="false"
